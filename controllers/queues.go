@@ -28,7 +28,9 @@ func NewQueue() {
 
 	List = append(List, tmpList, tmpList1)
 
-	fmt.Println(List)
+	fmt.Println(len(List))
+
+	//fmt.Println(List)
 
 }
 

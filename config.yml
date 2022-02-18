@@ -1,3 +1,10 @@
-Name: ""
-URL: ""
-Port: ""
+Server:
+  Name: DT Solucoes
+  Port: "8080"
+  Url: localhost
+Database:
+  Address: localhost
+  DbName: flyingqueue
+  DbPassword: root
+  DbUserName: root
+  Port: "5432"
