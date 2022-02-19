@@ -2,12 +2,15 @@ package controllers
 
 import (
 	"fmt"
+	"time"
 
+	"github.com/FlyingQueue/database"
+	"github.com/FlyingQueue/models"
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
-	NewQueue()
+
 }
 
 type Queue struct {
@@ -16,26 +19,34 @@ type Queue struct {
 
 var List []Queue
 
-func NewQueue() {
+func NewQueue(c *gin.Context) {
 
-	tmpList := Queue{
-		Name: "Marcus",
+	novoRegistro := models.AtendimentoQueue{
+		DataAtendimento: time.Now(),
+		Prioridade:      false,
 	}
 
-	tmpList1 := Queue{
-		Name: "Carlos",
-	}
+	db := database.GetDatabase()
 
-	List = append(List, tmpList, tmpList1)
-
-	fmt.Println(len(List))
-
-	//fmt.Println(List)
+	db.Create(&novoRegistro)
+	c.JSON(200, gin.H{
+		"status": "Registro inserido com sucesso",
+	})
 
 }
 
 func ReadQueue(c *gin.Context) {
 
-	c.JSON(200, List)
+	todosRegistros := []models.AtendimentoQueue{}
+
+	db := database.GetDatabase()
+
+	err := db.Find(&todosRegistros).Error
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	c.JSON(200, todosRegistros)
 
 }

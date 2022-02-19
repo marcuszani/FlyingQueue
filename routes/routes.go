@@ -12,6 +12,7 @@ func HandleRequests() {
 
 	r.GET("/status", controllers.StatusServer)
 	r.GET("/list", controllers.ReadQueue)
+	r.GET("/new", controllers.NewQueue)
 
 	r.Run(":" + config.Cfg.Server["Port"])
 }
