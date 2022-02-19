@@ -2,9 +2,10 @@ package controllers
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
-	"github.com/FlyingQueue/database"
+	"github.com/FlyingQueue/entities"
 	"github.com/FlyingQueue/models"
 	"github.com/gin-gonic/gin"
 )
@@ -13,40 +14,43 @@ func init() {
 
 }
 
-type Queue struct {
-	Name string `json:"name"`
-}
+func NovoAtendimento(c *gin.Context) {
 
-var List []Queue
-
-func NewQueue(c *gin.Context) {
-
-	novoRegistro := models.AtendimentoQueue{
+	novoRegistro := entities.AtendimentoQueue{
+		Nome:            c.Param("nome"),
 		DataAtendimento: time.Now(),
 		Prioridade:      false,
 	}
 
-	db := database.GetDatabase()
-
-	db.Create(&novoRegistro)
-	c.JSON(200, gin.H{
-		"status": "Registro inserido com sucesso",
-	})
-
-}
-
-func ReadQueue(c *gin.Context) {
-
-	todosRegistros := []models.AtendimentoQueue{}
-
-	db := database.GetDatabase()
-
-	err := db.Find(&todosRegistros).Error
+	err := models.NovoAtendimento(novoRegistro)
 
 	if err != nil {
 		fmt.Println(err)
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "Registro inserido com sucesso",
+		})
 	}
 
-	c.JSON(200, todosRegistros)
+}
+
+func BuscarTodosAtendimentos(c *gin.Context) {
+
+	c.JSON(200, models.TodosAtendimentos())
+
+}
+
+func BuscarAtendimentoPorID(c *gin.Context) {
+
+	registro := models.BuscarAtendimentoPorID(c.Params.ByName("id"))
+
+	if registro.ID == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "Registro não encontrado",
+		})
+		return
+	} else {
+		c.JSON(http.StatusOK, registro)
+	}
 
 }

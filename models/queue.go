@@ -1,24 +1,52 @@
 package models
 
 import (
-	"time"
+	"fmt"
 
-	"gorm.io/gorm"
+	"github.com/FlyingQueue/database"
+	"github.com/FlyingQueue/entities"
 )
 
-type AtendimentoQueue struct {
-	gorm.Model
-	DataAtendimento time.Time `json:"data atendimento"`
-	Prioridade      bool      `json: "prioridade"`
+// type AtendimentoQueue struct {
+// 	gorm.Model
+// 	DataAtendimento time.Time `json:"data atendimento"`
+// 	Prioridade      bool      `json:"prioridade"`
+// }
+
+func TodosAtendimentos() []entities.AtendimentoQueue {
+	db := database.GetDatabase()
+
+	atendimentos := []entities.AtendimentoQueue{}
+
+	err := db.Find(&atendimentos).Error
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return atendimentos
 }
 
-// func TodosAtendimentos() {
-// 	db := database.GetDatabase()
+func NovoAtendimento(novoRegistro entities.AtendimentoQueue) error {
 
-// 	atendimentos := AtendimentoQueue{}
+	db := database.GetDatabase()
 
-// 	todosAtendimentos := db.Find(&atendimentos)
+	err := db.Create(&novoRegistro).Error
 
-// 	fmt.Println(todosAtendimentos)
+	return err
 
-// }
+}
+
+func BuscarAtendimentoPorID(id string) entities.AtendimentoQueue {
+	db := database.GetDatabase()
+
+	atendimento := entities.AtendimentoQueue{}
+
+	err := db.Where("id = ?", id).First(&atendimento)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return atendimento
+}

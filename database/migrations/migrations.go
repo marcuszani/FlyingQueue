@@ -1,13 +1,13 @@
 package migrations
 
 import (
-	"github.com/FlyingQueue/models"
+	"github.com/FlyingQueue/entities"
 	"gorm.io/gorm"
 )
 
 func RunMigrations(db *gorm.DB) {
 	db.AutoMigrate(
-		models.AtendimentoQueue{},
+		entities.AtendimentoQueue{},
 	)
 
 }

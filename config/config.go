@@ -13,9 +13,6 @@ var path = "config.yml"
 type config struct {
 	Server   map[string]string `json:"Server" yaml:"Server"`
 	Database map[string]string `json:"Database" yaml:"Database"`
-	// Name   string `json:"Name" yaml:"Name"`
-	// Url    string `json:"Url"  yaml:"URL"`
-	// Port   int    `json:"Port" yaml:"Port"`
 }
 
 var Cfg *config = &config{}
@@ -40,18 +37,13 @@ func init() {
 }
 
 func createConfigFile() error {
-	// Cfg := &config{
-	// 	Name: "DT Solucoes",
-	// 	Url:  "localhost",
-	// 	Port: 8080,
-	// }
-
 	Cfg.Server = map[string]string{
 		"Name": "DT Solucoes",
 		"Url":  "localhost",
 		"Port": "8080",
 	}
 	Cfg.Database = map[string]string{
+		"Database":   "sqlite",
 		"Address":    "localhost",
 		"Port":       "5432",
 		"DbName":     "flyingqueue",
