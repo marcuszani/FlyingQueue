@@ -10,6 +10,8 @@ func HandleRequests() {
 	r := gin.Default()
 	r.SetTrustedProxies([]string{config.Cfg.Server["Url"]})
 
+	r.Static("/static", "./assets")
+
 	r.GET("/status", controllers.StatusServer)
 
 	gpAtendimento := r.Group("/atendimento")
