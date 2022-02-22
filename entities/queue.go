@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"database/sql"
 	"time"
 
 	"gorm.io/gorm"
@@ -8,7 +9,9 @@ import (
 
 type AtendimentoQueue struct {
 	gorm.Model
-	Nome            string    `json:"nome"`
-	DataAtendimento time.Time `json:"data atendimento"`
-	Prioridade      bool      `json:"prioridade"`
+	Nome        string       `json:"nome"`
+	SenhaGerada time.Time    `json:"senha gerada"`
+	Chamada     sql.NullTime `json:"senha chamada" gorm:"default=null"`
+	Encerrada   sql.NullTime `json:"encerrada" gorm:"default=null"`
+	Prioridade  bool         `json:"prioridade"`
 }

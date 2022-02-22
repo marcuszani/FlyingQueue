@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/FlyingQueue/database"
 	"github.com/FlyingQueue/entities"
@@ -49,4 +50,40 @@ func BuscarAtendimentoPorID(id string) entities.AtendimentoQueue {
 	}
 
 	return atendimento
+}
+
+func DeletarAtendimentoPorID(id string) error {
+	db := database.GetDatabase()
+
+	atendimento := entities.AtendimentoQueue{}
+
+	err := db.Where("id = ?", id).Delete(atendimento).Error
+
+	return err
+}
+
+func AtualizarAtendimentoPorID(id, nome string) error {
+	db := database.GetDatabase()
+
+	atendimento := entities.AtendimentoQueue{}
+
+	err := db.Model(&atendimento).Where("id = ?", id).Update("nome", nome).Error
+
+	return err
+}
+
+func ChamarSenha() (*entities.AtendimentoQueue, int64) {
+
+	senhaChamada := entities.AtendimentoQueue{}
+
+	db := database.GetDatabase()
+
+	contagem := db.Where("chamada IS ? AND encerrada is ? ", nil, nil).First(&senhaChamada).RowsAffected
+
+	if contagem > 0 {
+		db.Model(&senhaChamada).Where("id = ?", senhaChamada.ID).Update("chamada", time.Now())
+	}
+
+	return &senhaChamada, contagem
+
 }

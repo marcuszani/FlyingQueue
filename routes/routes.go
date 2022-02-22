@@ -19,6 +19,8 @@ func HandleRequests() {
 		gpAtendimento.GET("/listar", controllers.BuscarTodosAtendimentos)
 		gpAtendimento.POST("/novo", controllers.NovoAtendimento)
 		gpAtendimento.GET("/:id", controllers.BuscarAtendimentoPorID)
+		gpAtendimento.DELETE("/:id", controllers.DeletarAtendimentoPorID)
+		gpAtendimento.GET("/chamar", controllers.ChamarSenha)
 
 	}
 
