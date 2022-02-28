@@ -104,3 +104,19 @@ func ChamarSenha(c *gin.Context) {
 	}
 
 }
+
+func EncerrarAtendimento(c *gin.Context) {
+
+	err := models.EncerrarAtendimento(c.Params.ByName("id"))
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": "Erro ao deletar registro",
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "Atendimento Encerrado",
+		})
+	}
+
+}

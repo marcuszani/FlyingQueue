@@ -82,8 +82,37 @@ func ChamarSenha() (*entities.AtendimentoQueue, int64) {
 
 	if contagem > 0 {
 		db.Model(&senhaChamada).Where("id = ?", senhaChamada.ID).Update("chamada", time.Now())
+
 	}
 
 	return &senhaChamada, contagem
 
+}
+func EncerrarAtendimento(senha string) error {
+	db := database.GetDatabase()
+
+	senhaChamada := entities.AtendimentoQueue{}
+
+	err := db.Model(&senhaChamada).Where("id = ?", senha).Update("encerrada", time.Now()).Error
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		backupSenha := entities.SenhasChamadas{
+			ID:          senhaChamada.ID,
+			CreatedAt:   senhaChamada.CreatedAt,
+			UpdatedAt:   senhaChamada.UpdatedAt,
+			DeletedAt:   senhaChamada.DeletedAt.Time,
+			Nome:        senhaChamada.Nome,
+			SenhaGerada: senhaChamada.SenhaGerada,
+			Chamada:     senhaChamada.Chamada,
+			Encerrada:   senhaChamada.Encerrada,
+			Prioridade:  senhaChamada.Prioridade,
+		}
+		fmt.Println(backupSenha)
+
+		err = db.Create(&backupSenha).Error
+	}
+
+	return err
 }

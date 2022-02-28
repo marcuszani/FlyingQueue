@@ -8,6 +8,9 @@ import (
 func RunMigrations(db *gorm.DB) {
 	db.AutoMigrate(
 		entities.AtendimentoQueue{},
+		entities.SenhasChamadas{},
+		entities.Categoria{},
+		entities.Produto{},
 	)
 
 }
